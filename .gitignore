@@ -58,6 +58,5 @@ typings/
 .env
 
 /migrations
-/dist
 
 package-lock.json

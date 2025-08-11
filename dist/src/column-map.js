@@ -1,20 +1,13 @@
-import { Table } from './typescript'
-import { mapValues } from 'lodash'
-import { Enums } from './mysql-client'
-
-interface MapColumnOptions {
-  /** Treats binary fields as strings */
-  BinaryAsBuffer: boolean
-  DatesAsString: boolean
-}
-
-const options: MapColumnOptions = {
+'use strict'
+Object.defineProperty(exports, '__esModule', { value: true })
+exports.mapColumn = void 0
+const lodash_1 = require('lodash')
+const options = {
   BinaryAsBuffer: Boolean(process.env.BINARY_AS_BUFFER),
   DatesAsString: Boolean(process.env.DATES_AS_STRING)
 }
-
-export function mapColumn(Table: Table, enumTypes: Enums): Table {
-  return mapValues(Table, column => {
+function mapColumn(Table, enumTypes) {
+  return lodash_1.mapValues(Table, column => {
     switch (column.udtName) {
       case 'char':
       case 'varchar':
@@ -71,10 +64,13 @@ export function mapColumn(Table: Table, enumTypes: Enums): Table {
         return column
       default: {
         const name = column.udtName
-        const enumType: string[] | undefined = enumTypes[name]
-        column.tsType = enumType?.map(s => `'${s}'`).join(' | ') || 'any'
+        const enumType = enumTypes[name]
+        column.tsType =
+          (enumType === null || enumType === void 0 ? void 0 : enumType.map(s => `'${s}'`).join(' | ')) || 'any'
         return column
       }
     }
   })
 }
+exports.mapColumn = mapColumn
+//# sourceMappingURL=column-map.js.map
